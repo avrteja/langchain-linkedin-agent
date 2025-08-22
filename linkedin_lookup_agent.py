@@ -8,6 +8,7 @@ import os
 from langchain import hub
 from tools.tools import get_profile_search
 load_dotenv()
+from output_parsers import summary_parser
 
 def lookup(name: str) -> str:
     llm = ChatGoogleGenerativeAI(
@@ -17,11 +18,14 @@ def lookup(name: str) -> str:
     )
 
     template = """ given the full name {name_of_the_person} I want you to get me a link to the linkedin profile page. 
-    your answer should only contain a url"""
+    your answer should only contain a url
+    /n{format_instructions}
+    """
 
     prompt_template = PromptTemplate(
         template = template,
-        input_variables = ["name_of_the_person"]
+        input_variables = ["name_of_the_person"],
+        partial_variables = {"format_instructions": summary_parser.get_format_instructions()}
     )
 
     tools_for_the_agent = [
