@@ -17,10 +17,8 @@ def lookup(name: str) -> str:
         google_api_key=os.getenv("GEMINI_API_KEY")
     )
 
-    template = """ given the full name {name_of_the_person} I want you to get me a link to the linkedin profile page. 
-    your answer should only contain a url
-    /n{format_instructions}
-    """
+    template = """Given the full name {name_of_the_person}, return the LinkedIn profile page URL.
+    Your answer must only be a single URL (no extra text)."""
 
     prompt_template = PromptTemplate(
         template = template,

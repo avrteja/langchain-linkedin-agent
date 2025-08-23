@@ -16,12 +16,16 @@ if __name__ == "__main__":
     information = """
     Elon Reeve Musk FRS is a businessman. He is known for his leadership of Tesla, SpaceX, X, and the Department of Government Efficiency. Musk has been considered the wealthiest person in the world since 2021; as of May 2025, Forbes estimates his net worth to be US$424.7 billion.
     """
-
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_key:
+        raise ValueError("⚠️ GEMINI_API_KEY not found in .env file")
     # Prompt template — note the use of {information}
     summary_template = """
     Given the information about the person below, please provide:
     1. A short summary.
     2. Two interesting facts about them.
+
+    {format_instructions}
 
     Information:
     {information}
@@ -56,4 +60,4 @@ if __name__ == "__main__":
     res = chain.invoke(input={"information": linkedin_data})
 
     # Print result (res is a BaseMessage object)
-    print(res.content)
+    print(res.facts)
